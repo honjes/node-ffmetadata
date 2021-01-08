@@ -1,17 +1,19 @@
 /* jshint node:true */
 "use strict";
 
-var path = require("path"),
-	fs = require("fs"),
-	through = require("through"),
-	test = require("tape"),
-	ffmetadata = require("../");
+import path from "path"
+import fs from "fs"
+import through from "through"
+import test from "tape"
+import * as ffmetadata from "../index.js"
+import {PassThrough} from 'stream'
 
-var TEST_FILE_ORIG = path.join(__dirname, "test.mp3"),
-	TEST_FILE_ARTWORK_ORIG = path.join(__dirname, "test-artwork.mp3"),
-	TEST_FILE = path.join(__dirname, "__test.mp3"),
-	TEST_FILE_ARTWORK = path.join(__dirname, "__test-artwork.mp3"),
-	TEST_ARTWORK = path.join(__dirname, "test-cover.jpg");
+
+const TEST_FILE_ORIG = path.join('./', 'test', "test.mp3"),
+	TEST_FILE_ARTWORK_ORIG = path.join('./', 'test', "test-artwork.mp3"),
+	TEST_FILE = path.join('./', 'test', "__test.mp3"),
+	TEST_FILE_ARTWORK = path.join('./', 'test', "__test-artwork.mp3"),
+	TEST_ARTWORK = path.join('./', 'test', "test-cover.jpg");
 
 function copy(src, dst) {
 	var stream = through(),
@@ -22,7 +24,6 @@ function copy(src, dst) {
 	return stream;
 }
 
-var PassThrough = require("stream").PassThrough;
 function ender() {
 	var stream = new PassThrough();
 	var remaining = 0;

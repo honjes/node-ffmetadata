@@ -1,13 +1,16 @@
 /* jshint node:true */
 "use strict";
 
-var spawn = require("child_process").spawn,
-	ffmpeg = spawn.bind(null, process.env.FFMPEG_PATH || "ffmpeg"),
-	fs = require("fs"),
-	through = require("through"),
-	concat = require("concat-stream");
+import {spawn} from 'child_process'
+import fs from 'fs'
+import path from 'path'
+import through from 'through'
+import concat from 'concat-stream'
+import combine from 'stream-combiner'
+import split from 'split'
+import filter from 'stream-filter'
 
-module.exports.read = function(src, options, callback) {
+export function read(src, options, callback) {
 	if (typeof options === "function") {
 		callback = options;
 		options = {};
@@ -48,9 +51,9 @@ module.exports.read = function(src, options, callback) {
 	}
 
 	return stream;
-};
+}
 
-module.exports.write = function(src, data, options, callback) {
+export function write(src, data, options, callback) {
 	if (typeof options === "function") {
 		callback = options;
 		options = {};
@@ -109,9 +112,8 @@ module.exports.write = function(src, data, options, callback) {
 	}
 
 	return stream;
-};
+}
 
-var path = require("path");
 function getTempPath(src) {
 	var ext = path.extname(src),
 		basename = path.basename(src).slice(0, -ext.length),
@@ -188,10 +190,6 @@ function getAttachments(options) {
 }
 
 // -- Parse ini
-
-var combine = require("stream-combiner"),
-	filter = require("stream-filter"),
-	split = require("split");
 
 function parseini(callback) {
 	var stream = combine(
